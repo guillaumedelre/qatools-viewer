@@ -1,0 +1,8 @@
+includes:
+    - /usr/local/src/vendor-bin/phpstan/vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - /usr/local/src/vendor-bin/phpstan/vendor/phpstan/phpstan-doctrine/extension.neon
+    - /usr/local/src/vendor-bin/phpstan/vendor/phpstan/phpstan-doctrine/rules.neon
+    - /usr/local/src/vendor-bin/phpstan/vendor/phpstan/phpstan-phpunit/extension.neon
+    - /usr/local/src/vendor-bin/phpstan/vendor/phpstan/phpstan-beberlei-assert/extension.neon
+    - /usr/local/src/vendor-bin/phpstan/vendor/phpstan/phpstan-dibi/extension.neon
+    - /usr/local/src/vendor-bin/phpstan/vendor/phpstan/phpstan-strict-rules/rules.neon

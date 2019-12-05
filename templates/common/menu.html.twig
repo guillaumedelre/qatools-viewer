@@ -1,0 +1,56 @@
+<nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+    <a class="navbar-brand mr-auto mr-lg-0" href="{{ url('default_index') }}">
+        <i class="fas fa-code mr-1"></i>
+        QATools
+    </a>
+    <button class="navbar-toggler p-0 border-0" type="button" data-toggle="offcanvas">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    {% set activeMainMenu = null %}
+    <div class="navbar-collapse offcanvas-collapse" id="slidebar">
+        <ul class="navbar-nav mr-auto">
+            {% for menuItem in menu|filter(v => true == v.enabled) %}
+                {% if menuItem.active %}
+                    {% set activeMainMenu = menuItem %}
+                {% endif %}
+            <li class="nav-item {% if menuItem.active %}active{% endif %}">
+                <a class="nav-link {% if false == menuItem.enabled %}disabled{% endif %}" href="{{ menuItem.url }}">
+                    {% if menuItem.icon is not empty %}
+                        <i class="{{ menuItem.icon }} mr-2"></i>
+                    {% endif %}
+                    {{ menuItem.label|capitalize}} {% if menuItem.active %}<span class="sr-only">(current)</span>{% endif %}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+{#
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+        <ul class="navbar-nav">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Settings</a>
+                <div class="dropdown-menu" aria-labelledby="dropdown01">
+                    <a class="dropdown-item" href="#">Action</a>
+                    <a class="dropdown-item" href="#">Another action</a>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+        </ul>
+#}
+    </div>
+</nav>
+
+{% if activeMainMenu is not null %}
+<div class="nav-scroller bg-white shadow-sm">
+    <nav class="nav nav-underline">
+        {% for menuItem in activeMainMenu.children %}
+            <a class="nav-link {% if menuItem.active %}active{% endif %} {% if false == menuItem.enabled %}disabled{% endif %}" href="{{ menuItem.url }}">
+                {{ menuItem.label|capitalize}} {% if menuItem.active %}<span class="sr-only">(current)</span>{% endif %}
+            </a>
+        {% endfor %}
+    </nav>
+</div>
+{% endif %}

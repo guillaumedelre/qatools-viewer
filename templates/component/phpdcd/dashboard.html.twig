@@ -1,0 +1,42 @@
+{% for component in components %}
+    <div class="card {{ component.options.class|e }} mt-3 mb-3">
+        <div class="card-header">
+            <h6 class="card-text">
+                <i class="{{ component.options.icon }} mr-2"></i>
+                {{ component.label|capitalize }}
+            </h6>
+        </div>
+        {% if component.data is not empty %}
+        <ul class="list-group list-group-flush">
+            {% for filename, items in component.data %}
+                <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+                    <span>{{ filename }}</span>
+                    <span>{{ items|length }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Method</th>
+                            <th class="text-center">Line</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set lines = items|column('line') %}
+                        {% for i, item in items %}
+                        <tr>
+                            <td>{{ item.method }}</td>
+                            <td class="text-center">{{ item.line }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </li>
+                <li class="list-group-item">
+                    <pre data-line="{{ lines|join(',') }}" data-src="plugins/line-highlight/prism-line-highlight.js"><code class="line-numbers language-{{ filename|extractFileExtension }}">{{ filename|prettify }}</code></pre>
+                </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+{% endfor %}

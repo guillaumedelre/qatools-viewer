@@ -1,0 +1,80 @@
+{% for component in components %}
+    <div class="card {{ component.options.class|e }} mt-3 mb-3">
+        <div class="card-header">
+            <h6 class="card-text">
+                <i class="{{ component.options.icon }} mr-2"></i>
+                {{ component.label|capitalize }}
+            </h6>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div class="col text-center">
+                    <div class="card">
+                        <div class="card-body">
+                            Found <strong>{{ component.data.count.clones }}</strong> clones<br/>
+                            with <strong>{{ component.data.count.duplicates }}</strong> duplicated lines in
+                            <strong>{{ component.data.count.files }}</strong> files.
+                        </div>
+                    </div>
+                </div>
+                <div class="col text-center">
+                    <div class="card">
+                        <div class="card-body">
+                            <strong>{{ component.data.ratio.percent }}</strong>% duplicated lines<br/>
+                            out of <strong>{{ component.data.ratio.total }}</strong> total lines of code.
+                        </div>
+                    </div>
+                </div>
+                <div class="col text-center">
+                    <div class="card">
+                        <div class="card-body">
+                            Average size of duplication is <strong>{{ component.data.average.med }}</strong> lines<br/>
+                            largest clone has <strong>{{ component.data.average.max }}</strong> of lines.
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        {% if component.data.cpd is defined %}
+        <ul class="list-group list-group-flush">
+            {% for cpd in component.data.cpd|filter(v => v is not empty) %}
+                <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+                    <span>{{ cpd.file }}</span>
+                    <span>{{ cpd.clones|filter(v => v is not empty)|length * cpd.length }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span><strong>{{ cpd.length }}</strong> characters code block detected from line <strong>{{ cpd.fromline }}</strong> to line <strong>{{ cpd.toline }}</strong>.</span>
+                </li>
+                <li class="list-group-item">
+                    <pre data-line="{{ cpd.fromline }}-{{ cpd.toline }}" data-src="plugins/line-highlight/prism-line-highlight.js"><code class="line-numbers language-{{ cpd.file|extractFileExtension }}">{{ cpd.file|prettify }}</code></pre>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>File</th>
+                            <th class="text-center">From line</th>
+                            <th class="text-center">To line</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for clone in cpd.clones %}
+                            <tr>
+                                <td>{{ clone.file }}</td>
+                                <td class="text-center">{{ clone.fromline }}</td>
+                                <td class="text-center">{{ clone.toline }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <pre data-line="{{ clone.fromline }}-{{ clone.toline }}" data-src="plugins/line-highlight/prism-line-highlight.js"><code class="line-numbers language-{{ clone.file|extractFileExtension }}">{{ clone.file|prettify }}</code></pre>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+{% endfor %}

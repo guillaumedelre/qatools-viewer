@@ -1,0 +1,109 @@
+<div class="card text-center mt-3 mb-3">
+    <div class="card-header">
+        <ul class="nav nav-tabs card-header-tabs nav-fill" id="myTab" role="tablist">
+            {% for component in components|filter(v => v.name == 'file_list') %}
+                <li class="nav-item">
+                    <a class="nav-link active" data-toggle="tab" href="#file_list" role="tab" aria-controls="file_list"
+                       aria-selected="true">
+                        <i class="{{ component.options.icon }} mr-2"></i>
+                        {{ component.label|capitalize }}
+                    </a>
+                </li>
+            {% endfor %}
+            {% for component in components|filter(v => v.name == 'package_list') %}
+                <li class="nav-item">
+                    <a class="nav-link" data-toggle="tab" href="#package_list" role="tab" aria-controls="package_list"
+                       aria-selected="false">
+                        <i class="{{ component.options.icon }} mr-2"></i>
+                        {{ component.label|capitalize }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="card-body">
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="file_list" role="tabpanel" aria-labelledby="file_list">
+                {% for component in components|filter(v => v.name == 'file_list') %}
+                    <table class="table datatable">
+                        <thead>
+                        <tr>
+                            <th class="text-left">class</th>
+                            <th class="text-center">loc</th>
+                            <th class="text-center">cloc</th>
+                            <th class="text-center">eloc</th>
+                            <th class="text-center">lloc</th>
+                            <th class="text-center">ncloc</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for item in component.data %}
+                            <tr>
+                                <td class="text-left">{{ item['@name'] }}</td>
+                                <td class="text-center">{{ item['@loc'] }}</td>
+                                <td class="text-center">{{ item['@cloc'] }}</td>
+                                <td class="text-center">{{ item['@eloc'] }}</td>
+                                <td class="text-center">{{ item['@lloc'] }}</td>
+                                <td class="text-center">{{ item['@ncloc'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                {% endfor %}
+            </div>
+            <div class="tab-pane fade" id="package_list" role="tabpanel" aria-labelledby="package_list">
+                <ul class="list-group list-group-flush">
+                    {% for component in components|filter(v => v.name == 'package_list') %}
+                        {% for package in component.data %}
+                            <li class="list-group-item list-group-item-info d-flex justify-content-between">
+                                <span title="package">{{ package['@name'] }}</span>
+                                <span title="noc">{{ package['@noc'] }}</span>
+                                <span title="noi">{{ package['@noi'] }}</span>
+                                <span title="nom">{{ package['@nom'] }}</span>
+                                <span title="nof">{{ package['@nof'] }}</span>
+                                <span title="cr">{{ package['@cr']|number_format(2) }}</span>
+                                <span title="rcr">{{ package['@rcr']|number_format(2) }}</span>
+                            </li>
+                            {% set classes = [] %}
+                            {% if package.class['@name'] is defined %}
+                                {% set classes = [package.class] %}
+                            {% else %}
+                                {% set classes = package.class %}
+                            {% endif %}
+                            <li class="list-group-item">
+                                <table class="table">
+                                    <tbody>
+                                    {% for class in classes %}
+                                        <tr>
+                                            <td style="width:20%" class="text-left"
+                                                title="class">{{ class['@fqname'] ?? class['@name'] ?? '' }}</td>
+                                            <td title="loc">{{ class['@loc'] }}</td>
+                                            <td title="cloc">{{ class['@cloc'] }}</td>
+                                            <td title="eloc">{{ class['@eloc'] }}</td>
+                                            <td title="lloc">{{ class['@lloc'] }}</td>
+                                            <td title="ncloc">{{ class['@ncloc'] }}</td>
+                                            <td title="dit">{{ class['@dit'] }}</td>
+                                            <td title="noam">{{ class['@noam'] }}</td>
+                                            <td title="nocc">{{ class['@nocc'] }}</td>
+                                            <td title="noom">{{ class['@noom'] }}</td>
+                                            <td title="nom">{{ class['@nom'] }}</td>
+                                            <td title="cr">{{ class['@cr']|number_format(2) }}</td>
+                                            <td title="rcr">{{ class['@rcr']|number_format(2) }}</td>
+                                            {#                                {% if class.file is defined %}#}
+                                            {#                                    <li class="list-group-item">#}
+                                            {#                                        <pre data-line="" data-src="plugins/line-highlight/prism-line-highlight.js"><code class="line-numbers language-{{ class.file['@name']|extractFileExtension }}">{{ class.file['@name']|prettify }}</code></pre>#}
+                                            {#                                    </li>#}
+                                            {#                                {% endif %}#}
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+
+

@@ -1,0 +1,44 @@
+{% for component in components|filter(v => v.name == 'file_list') %}
+    <div class="card {{ component.options.class|e }} mt-3 mb-3">
+        <div class="card-header">
+            <h6 class="card-text">
+                <i class="{{ component.options.icon }} mr-2"></i>
+                {{ component.label|capitalize }}
+            </h6>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for item in component.data %}
+                <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+                    <span>{{ item.file }}</span>
+                    <span>{{ item.violations|length }}</span>
+                </li>
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Message</th>
+                            <th>Rule</th>
+                            <th class="text-center">Line</th>
+                            <th class="text-center">Priority</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% set lines = item.violations|column('beginLine') %}
+                        {% for violation in item.violations %}
+                            <tr>
+                                <td>{{violation.description }}</td>
+                                <td><a href="{{ violation.externalInfoUrl }}" target="_blank">{{violation.ruleSet }}</a></td>
+                                <td class="text-center">{{ violation.beginLine }}</td>
+                                <td class="text-center">{{ violation.priority }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </li>
+                <li class="list-group-item">
+                    <pre data-line="{{ lines|join(',') }}" data-src="plugins/line-highlight/prism-line-highlight.js"><code class="line-numbers language-{{ item.file|extractFileExtension }}">{{ item.file|prettify }}</code></pre>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endfor %}

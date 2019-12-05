@@ -1,0 +1,24 @@
+{% for component in components %}
+    <div class="card {{ component.options.class|e }} mt-3 mb-3">
+        <div class="card-header">
+            <h6 class="card-text">
+                <i class="{{ component.options.icon }} mr-2"></i>
+                {{ component.label|capitalize }}
+            </h6>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for package, vulnerability in component.data %}
+                <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-danger">
+                    <span>{{ package }} {{ vulnerability.version }}</span>
+                    <span>{{ vulnerability.advisories|length }}</span>
+                </li>
+                {% for advisory in vulnerability.advisories %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="{{ advisory.link }}" target="_blank">{{ advisory.title }}</a>
+                    <a class="text-dark" href="http://cve.mitre.org/cgi-bin/cvename.cgi?name={{ advisory.cve }}" target="_blank">{{ advisory.cve }}</a>
+                </li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endfor %}

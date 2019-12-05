@@ -1,0 +1,17 @@
+{% for type, messages in app.flashes %}
+    {% for message in messages %}
+        <div class="alert alert-{{ type }} alert-dismissible fade show mt-3" role="alert">
+            <h4 class="alert-heading"><i class="{{ message.icon }} mr-2"></i>{{ message.heading }}</h4>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            <a class="btn btn-sm btn-link text-dark" data-toggle="collapse" href="#trace" role="button" aria-expanded="false" aria-controls="trace">
+                {{ message.message }}
+            </a>
+            <div id="trace" class="collapse">
+                <hr>
+                <pre class="mb-0">{{ message.trace }}</pre>
+            </div>
+        </div>
+    {% endfor %}
+{% endfor %}

@@ -1,0 +1,16 @@
+<div class="card-deck mt-3">
+    {% for component in components|filter(v => v.name == 'graph_list') %}
+        <div class="card">
+            <div class="card-header">
+                <h6 class="card-text">
+                    {{ component.label|capitalize }}
+                </h6>
+            </div>
+            <div class="card-body text-center">
+                <picture class="img-fluid">
+                    {{ component.data|raw }}
+                </picture>
+            </div>
+        </div>
+    {% endfor %}
+</div>
