@@ -1,0 +1,17 @@
+version: '3'
+services:
+  qat:
+    build:
+      dockerfile: Dockerfile
+      context: ./docker
+  nginx:
+    image: jmoati/nginx
+    volumes:
+    - .:/app
+    - ./dist/nginx:/etc/nginx/conf.d
+    ports:
+    - 8080:80
+  php:
+    image: jmoati/php-fpm
+    volumes:
+    - .:/app

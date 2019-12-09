@@ -1,4 +1,4 @@
-QA        	  = docker run --rm -v `pwd`:/project -w /project guillaumedelre/qat
+QA        	  = docker-compose run --rm -v `pwd`:/project -w /project qat
 COMPOSER  	  = cd $(BASE_PATH) && composer
 EXEC_PHP	  = cd $(BASE_PATH) && php
 SYMFONY  	  = bin/console
@@ -101,7 +101,7 @@ phpdcd: artifacts
 
 phpstan: ## PHP Static Analysis Tool (https://github.com/phpstan/phpstan)
 phpstan: artifacts
-	@$(QA) phpstan analyse -c docker/phpstan.neon -l max --error-format prettyJson src > $(ARTIFACT_DIR)/phpstan-report.json \
+	@$(QA) phpstan analyse -c docker/phpstan.neon -l max --error-format prettyJson --no-progress src > $(ARTIFACT_DIR)/phpstan-report.json \
 	|| echo "\n Please check $(COMMENT)$(ARTIFACT_DIR)/phpstan-report.json.$(END)\\n"
 
 phpmetrics: ## PhpMetrics (http://www.phpmetrics.org)
