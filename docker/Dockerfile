@@ -17,7 +17,6 @@ RUN set -xe; \
             phpstan/phpstan-dibi \
             phpstan/phpstan-doctrine \
             phpstan/phpstan-phpunit \
-            phpstan/phpstan-shim \
             phpstan/phpstan-beberlei-assert \
             phpstan/phpstan-deprecation-rules \
             phpstan/phpstan-symfony \
@@ -41,7 +40,7 @@ RUN set -xe; \
 
     COPY .php_cs.dist .phpmd.xml phpstan.neon /usr/local/src/
 
-FROM php:7.3-fpm-alpine
+FROM php:7.4-fpm-alpine
 
 COPY --from=src /usr/local/src/ /usr/local/src/
 ENV PATH /usr/local/src/vendor/bin:$PATH
